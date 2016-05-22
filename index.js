@@ -14,7 +14,7 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
 
     function startFlow(cb) {
         if (options.restartFlow === false) {
-            shell.exec(flow + ' start ' + flowArgs, cb);
+            shell.exec(flow + ' check ' + flowArgs, cb);
         } else {
             shell.exec(flow + ' stop', function() {
                 shell.exec(flow + ' start ' + flowArgs, cb);
