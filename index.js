@@ -46,6 +46,14 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
                 var hasErrors = code !== 0;
 
                 if (hasErrors) {
+                    if (options.notifier) {
+                        // Use node-notifier provided through options.notifier
+                        options.notifier.notify({
+                            title: 'Flow',
+                            message: 'Flow has errors!',
+                        });
+                    }
+
                     console.log('\n----------------'.red);
                     console.log('Flow has errors!');
                     console.log('----------------\n'.red);
