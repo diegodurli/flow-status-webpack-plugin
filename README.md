@@ -102,6 +102,22 @@ module.exports = {
 }
 ```
 
+If you want error notifications through [node-notifier](https://github.com/mikaelbr/node-notifier), install it with `npm install node-notifier` and pass: `notifier: require('node-notifier')`:
+
+```js
+var FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+
+module.exports = {
+    ...
+    plugins: [
+        new FlowStatusWebpackPlugin({
+            notifier: require('node-notifier'),
+        })
+    ]
+}
+```
+
+
 License
 -------
 This plugin is released under the [MIT License](https://opensource.org/licenses/MIT).
