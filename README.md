@@ -102,16 +102,22 @@ module.exports = {
 }
 ```
 
-If you want error notifications through [node-notifier](https://github.com/mikaelbr/node-notifier), install it with `npm install node-notifier` and pass: `notifier: require('node-notifier')`:
+If you want to customize what happens on success/error, pass `onSuccess` and/or `onError` callbacks:
 
 ```js
 var FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+var notifier = require('node-notifier');
 
 module.exports = {
     ...
     plugins: [
         new FlowStatusWebpackPlugin({
-            notifier: require('node-notifier'),
+            onSuccess: function(stdout) {
+                notifier.notify({ title: 'Flow', message: 'Everything is fine with Flow!' });
+            },
+            onError: function(stderr, code) {
+                notifier.notify({ title: 'Flow', message: 'Flow exit code ' + code });
+            },
         })
     ]
 }
