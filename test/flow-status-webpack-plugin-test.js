@@ -107,6 +107,19 @@ describe('Flow status webpack plugin', function() {
         expect(consoleMock._logs).to.have.length.above(0);
     });
 
+    it('shouldn\'t log on success if quietSuccess is passed', function() {
+        var Plugin = make(shellMock, consoleMock);
+        var commandCount;
+
+        (new Plugin({
+            quietSuccess: true,
+        })).apply(compilerMock);
+
+        shellMock._code = 0;
+        compilerMock._run('done');
+        expect(consoleMock._logs).to.have.lengthOf(0);
+    });
+
     it('should handle custom error/success handlers', function() {
         var Plugin = make(shellMock, consoleMock);
         var commandCount;
