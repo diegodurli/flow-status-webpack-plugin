@@ -102,6 +102,28 @@ module.exports = {
 }
 ```
 
+If you want to customize what happens on success/error, pass `onSuccess` and/or `onError` callbacks:
+
+```js
+var FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+var notifier = require('node-notifier');
+
+module.exports = {
+    ...
+    plugins: [
+        new FlowStatusWebpackPlugin({
+            onSuccess: function(stdout) {
+                notifier.notify({ title: 'Flow', message: 'Everything is fine with Flow!' });
+            },
+            onError: function(stderr, code) {
+                notifier.notify({ title: 'Flow', message: 'Flow exit code ' + code });
+            },
+        })
+    ]
+}
+```
+
+
 License
 -------
 This plugin is released under the [MIT License](https://opensource.org/licenses/MIT).
