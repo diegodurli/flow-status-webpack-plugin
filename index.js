@@ -41,7 +41,8 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
       waitingForFlow = true;
 
       // this will start a flow server if it was not running
-      shell.exec(flow + ' status --color always', {silent: true}, function(code, stdout, stderr) {
+      // quiet option will suppress any "server starting" messages
+      shell.exec(flow + ' status --color always --quiet', {silent: true}, function(code, stdout, stderr) {
         var hasErrors = code !== 0;
         var cb = hasErrors ? errorCb : successCb;
         waitingForFlow = false;
@@ -59,10 +60,19 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
         onSuccess(stdout);
 
         cb();
-      }, function error(stdout) {
-        onError(stdout);
+      }, function error(stdout, stderr) {
+        var msg = stdout;
+        // In case flow server got killed.
+        if (!stdout && !stderr) {
+            stderr = 'Unknown error!';
+        }
+        if (stderr) {
+            msg = (msg ? msg + '\n' : '') + 'flow server: ' + stderr;
+        }
 
-        flowError = new Error(stdout);
+        onError(msg);
+
+        flowError = new Error(msg);
         // Here we don't pass error to callback because
         // webpack-dev-middleware would just throw it
         // and cause webpack dev server to exit with
