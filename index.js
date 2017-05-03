@@ -10,6 +10,7 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
   var options = this.options;
   var flowArgs = options.flowArgs || '';
   var flow = options.binaryPath || 'flow';
+  var root = options.root || '';
   var failOnError = options.failOnError || false;
   var onSuccess = options.onSuccess || noop;
   var onError = options.onError || noop;
@@ -20,8 +21,8 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
     if (options.restartFlow === false) {
       cb();
     } else {
-      shell.exec(flow + ' stop', {silent: true}, function() {
-        shell.exec(flow + ' start ' + flowArgs, {silent: true}, cb);
+      shell.exec(flow + ' stop ' + root, {silent: true}, function() {
+        shell.exec(flow + ' start ' + flowArgs + ' ' + root, {silent: true}, cb);
       });
     }
   }
@@ -41,7 +42,7 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
       waitingForFlow = true;
 
       // this will start a flow server if it was not running
-      shell.exec(flow + ' status --color always', {silent: true}, function(code, stdout, stderr) {
+      shell.exec(flow + ' status --color always '+ root, {silent: true}, function(code, stdout, stderr) {
         var hasErrors = code !== 0;
         var cb = hasErrors ? errorCb : successCb;
         waitingForFlow = false;
