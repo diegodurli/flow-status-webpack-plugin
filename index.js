@@ -60,10 +60,11 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
         onSuccess(stdout);
 
         cb();
-      }, function error(stdout) {
-        onError(stdout);
+      }, function error(stdout,stderr) {
 
-        flowError = new Error(stdout);
+        onError(stdout,stderr);
+
+        flowError = new Error(stdout + '\n' + stderr);
         // Here we don't pass error to callback because
         // webpack-dev-middleware would just throw it
         // and cause webpack dev server to exit with
