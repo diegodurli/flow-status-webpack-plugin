@@ -74,11 +74,11 @@ FlowStatusWebpackPlugin.prototype.apply = function(compiler) {
     })
   }
 
-  compiler.plugin('run', checkItWreckIt);
-  compiler.plugin('watch-run', checkItWreckIt);
+  compiler.hooks.run.tapAsync('flow-status-webpack-plugin', checkItWreckIt);
+  compiler.hooks.watchRun.tapAsync('flow-status-webpack-plugin', checkItWreckIt);
 
   // If there are flow errors, fail the build before compilation starts.
-  compiler.plugin('compilation', function (compilation) {
+  compiler.hooks.compilation.tap('flow-status-webpack-plugin', function (compilation) {
     if (flowError) {
       if (failOnError === true) {
         compilation.errors.push(flowError);
