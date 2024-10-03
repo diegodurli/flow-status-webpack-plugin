@@ -1,6 +1,6 @@
 {
   "name": "flow-status-webpack-plugin",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "author": "Diego Durli <dgodurli@gmail> (https://github.com/diegodurli)",
   "dependencies": {
     "shelljs": "^0.6.0"
